@@ -1,0 +1,145 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: coscialp <coscialp@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/12/11 14:31:42 by coscialp          #+#    #+#             */
+/*   Updated: 2021/01/04 11:21:20 by coscialp         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philo_three.h"
+
+void		*ft_memcpy(void *dest, const void *src, size_t n)
+{
+	const char		*s;
+	char			*d;
+	size_t			i;
+
+	i = 0;
+	if (!dest && !src)
+		return (NULL);
+	s = (const char *)src;
+	d = (char *)dest;
+	while (n--)
+	{
+		d[i] = s[i];
+		i++;
+	}
+	return (dest);
+}
+
+char		*ft_strdup(const char *str)
+{
+	size_t		size;
+	size_t		i;
+	char		*dest;
+
+	i = 0;
+	size = ft_strlen(str);
+	if (!(dest = (char*)ft_calloc(sizeof(char), size + 1)))
+		return (NULL);
+	ft_memcpy(dest, str, size);
+	return (dest);
+}
+
+char		*ft_itoa(int n)
+{
+	static char	buf[12] = {0};
+	int			i;
+	int			neg;
+
+	i = 10;
+	if (n == -2147483648)
+		return (ft_strdup("-2147483648"));
+	neg = n < 0 ? -1 : 1;
+	n = n < 0 ? -n : n;
+	while (1)
+	{
+		buf[i--] = n % 10 + '0';
+		n /= 10;
+		if (n == 0)
+			break ;
+	}
+	if (neg == -1)
+		buf[i] = '-';
+	return (neg == -1 ? ft_strdup(buf + i) : ft_strdup(buf + 1 + i));
+}
+
+int		init_philosoph(int i)
+{
+	static t_philosoph	*left = NULL;
+	static t_philosoph	*top = NULL;
+	static char			name_sem_eat[15] = {0};
+	static char			name_sem_check[15] = {0};
+	char				*number;
+
+	if (!(state()->philosoph = malloc(sizeof(t_philosoph))))
+		return (1);
+	state()->philosoph->left = left;
+	if (left)
+		state()->philosoph->left->right = state()->philosoph;
+	state()->philosoph->id = i + 1;
+	state()->philosoph->is_dead = 1;
+	state()->philosoph->eating = 0;
+	number = ft_itoa(i + 1);
+	ft_strcat(name_sem_check, "sem_check", 0);
+	ft_strcat(name_sem_check, number, 9);
+	sem_unlink(name_sem_check);
+	state()->philosoph->sem_check = sem_open(name_sem_check, O_CREAT, S_IRWXU, 1);
+	ft_strcat(name_sem_eat, "sem_eat", 0);
+	ft_strcat(name_sem_check, number, 9);
+	sem_unlink(name_sem_eat);
+	state()->philosoph->sem_eat = sem_open(name_sem_eat, O_CREAT, S_IRWXU, 0);
+	left = state()->philosoph;
+	if (i == 0)
+		top = state()->philosoph;
+	if (i == state()->rules.number_of_philo - 1)
+		state()->philosoph->right = top;
+	free(number);
+	return (0);
+}
+
+int		init_rules(int ac, char **av)
+{
+	int i;
+
+	if (ac <= 4 || ac >= 7)
+		return (ft_error("Invalid number of arguments\n"));
+	i = 0;
+	while (++i < (ac == 6 ? 6 : 5))
+		if (ft_stris(av[i], ft_isdigit))
+			return (ft_error("Arguments must be composed by digit\n"));
+	if ((state()->rules.number_of_philo = ft_atoi(av[1])) <= 0)
+		return (ft_error("Number of philosoph must be positive\n"));
+	if ((state()->rules.time_to_die = ft_atoi(av[2])) <= 0)
+		return (ft_error("Rule must be positive\n"));
+	if ((state()->rules.time_to_eat = ft_atoi(av[3])) <= 0)
+		return (ft_error("Rule must be positive\n"));
+	if ((state()->rules.time_to_sleep = ft_atoi(av[4])) <= 0)
+		return (ft_error("Rule must be positive\n"));
+	state()->rules.number_of_must_eat = (ac == 6) ? ft_atoi(av[5]) : -1;
+	sem_unlink("sem_write");
+	state()->sem_write = sem_open("sem_write", O_CREAT, S_IRWXU, 1);
+	sem_unlink("sem_forks");
+	state()->forks = sem_open("sem_forks", O_CREAT, S_IRWXU, state()->rules.number_of_philo);
+	return (0);
+}
+
+int		init_state(int ac, char **av)
+{
+	int			i;
+
+	if (init_rules(ac, av))
+		return (1);
+	i = -1;
+	while (++i < state()->rules.number_of_philo)
+	{
+		if (init_philosoph(i))
+			return (ft_error("Allocation failed\n"));
+	}
+	state()->philosoph = state()->philosoph->right;
+	return (0);
+}

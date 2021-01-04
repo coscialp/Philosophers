@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../../cbussier_philo"
+		},
+		{
+			"path": "../../philosophers"
+		}
+	]
+}
