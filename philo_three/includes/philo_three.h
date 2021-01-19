@@ -6,7 +6,7 @@
 /*   By: coscialp <coscialp@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/10 09:40:47 by coscialp          #+#    #+#             */
-/*   Updated: 2021/01/04 10:59:23 by coscialp         ###   ########lyon.fr   */
+/*   Updated: 2021/01/19 14:56:17 by coscialp         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,7 @@ int				ft_is_dead(t_philosoph *philo);
 void			destroy_sem(void);
 void			*ft_calloc(size_t size, size_t count);
 short			ft_strcat(char *dest, const char *src, short i);
+sem_t			*create_sem(char *name, int id, int value);
+void			*ft_memcpy(void *dest, const void *src, size_t n);
 
 #endif

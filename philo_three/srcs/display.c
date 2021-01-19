@@ -6,15 +6,15 @@
 /*   By: coscialp <coscialp@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 10:17:05 by coscialp          #+#    #+#             */
-/*   Updated: 2021/01/04 10:59:04 by coscialp         ###   ########lyon.fr   */
+/*   Updated: 2021/01/19 14:56:35 by coscialp         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_three.h"
 
-short	ft_strcat(char *dest, const char *src, short i)
+short		ft_strcat(char *dest, const char *src, short i)
 {
-	int j;
+	int		j;
 
 	j = 0;
 	while (src[j])
@@ -23,7 +23,7 @@ short	ft_strcat(char *dest, const char *src, short i)
 	return (i);
 }
 
-void			display(t_philosoph *philo, char *message)
+void		display(t_philosoph *philo, char *message)
 {
 	char	str[100];
 	short	i;
