@@ -6,7 +6,7 @@
 /*   By: coscialp <coscialp@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/10 12:08:50 by coscialp          #+#    #+#             */
-/*   Updated: 2021/01/20 12:09:16 by coscialp         ###   ########lyon.fr   */
+/*   Updated: 2021/01/20 13:47:40 by coscialp         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,11 @@ void		*th_eating(void *ptr)
 		while (++i < state()->rules.number_of_philo && !state()->end)
 			if (ending[i] != 1)
 				break ;
+		pthread_mutex_lock(&state()->mutex_write);
 		if (i == state()->rules.number_of_philo)
 			state()->end = 1;
-		usleep(1000);
+		pthread_mutex_unlock(&state()->mutex_write);
+		usleep(500);
 	}
 	free(ending);
 	return (NULL);

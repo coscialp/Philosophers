@@ -6,7 +6,7 @@
 /*   By: coscialp <coscialp@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/10 12:08:50 by coscialp          #+#    #+#             */
-/*   Updated: 2021/01/20 12:11:44 by coscialp         ###   ########lyon.fr   */
+/*   Updated: 2021/01/20 14:03:01 by coscialp         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void		*th_eating(void *ptr)
 	while (!state()->end)
 	{
 		i = -1;
+		sem_wait(state()->sem_write);
 		while (++i < state()->rules.number_of_philo && !state()->end)
 		{
 			if (state()->philosoph->eating == state()->rules.number_of_must_eat)
@@ -83,7 +84,8 @@ void		*th_eating(void *ptr)
 				break ;
 		if (i == state()->rules.number_of_philo)
 			state()->end = 1;
-		usleep(1000);
+		sem_post(state()->sem_write);
+		usleep(500);
 	}
 	free(ending);
 	return (NULL);
