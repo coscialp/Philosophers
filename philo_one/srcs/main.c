@@ -6,7 +6,7 @@
 /*   By: coscialp <coscialp@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/10 12:08:50 by coscialp          #+#    #+#             */
-/*   Updated: 2020/12/18 12:20:10 by coscialp         ###   ########lyon.fr   */
+/*   Updated: 2021/01/20 12:09:16 by coscialp         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ int			main(int ac, char **av)
 		return (1);
 	gettimeofday(&state()->begin_time, NULL);
 	state()->time = get_time();
+	if (state()->rules.number_of_must_eat == 0)
+		return (0);
 	if (state()->rules.number_of_must_eat != -1)
 		pthread_create(&end_game, NULL, th_eating, NULL);
 	while (++i < state()->rules.number_of_philo)

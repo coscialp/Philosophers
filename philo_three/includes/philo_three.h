@@ -6,7 +6,7 @@
 /*   By: coscialp <coscialp@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/10 09:40:47 by coscialp          #+#    #+#             */
-/*   Updated: 2021/01/19 14:56:17 by coscialp         ###   ########lyon.fr   */
+/*   Updated: 2021/01/20 12:36:22 by coscialp         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct	s_state
 	struct timeval		begin_time;
 	time_t				time;
 	bool				end;
+	sem_t				*sem_end;
 }				t_state;
 
 int				ft_write(int fd, char *buf, size_t size);
