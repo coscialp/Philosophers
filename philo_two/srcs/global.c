@@ -6,7 +6,7 @@
 /*   By: coscialp <coscialp@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 10:55:23 by coscialp          #+#    #+#             */
-/*   Updated: 2020/12/18 12:18:22 by coscialp         ###   ########lyon.fr   */
+/*   Updated: 2021/01/20 09:23:54 by coscialp         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,16 @@
 
 void		destroy_sem(void)
 {
-	int		i;
+	int			i;
+	t_philosoph	*tmp;
 
 	i = -1;
 	while (++i < state()->rules.number_of_philo)
 	{
 		sem_close(state()->philosoph->sem_check);
-		state()->philosoph = state()->philosoph->right;
+		tmp = state()->philosoph->right;
+		free(state()->philosoph);
+		state()->philosoph = tmp;
 	}
 	sem_close(state()->sem_write);
 	sem_close(state()->forks);

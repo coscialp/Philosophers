@@ -6,7 +6,7 @@
 /*   By: coscialp <coscialp@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 10:58:35 by coscialp          #+#    #+#             */
-/*   Updated: 2020/12/18 12:18:06 by coscialp         ###   ########lyon.fr   */
+/*   Updated: 2021/01/20 11:04:58 by coscialp         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_sleep(t_philosoph *philo)
 {
-	display(philo, "sleeping");
+	display(philo, "is sleeping");
 	usleep(state()->rules.time_to_sleep * 1000);
 }
 
@@ -23,16 +23,16 @@ int		ft_eat(t_philosoph *philo)
 	if (state()->rules.number_of_philo == 1)
 	{
 		sem_wait(state()->forks);
-		display(philo, "take a fork");
+		display(philo, "has taken a fork");
 		usleep(state()->rules.time_to_die * 1000);
 		return (1);
 	}
 	sem_wait(state()->forks);
 	sem_wait(state()->forks);
-	display(philo, "take a fork");
-	display(philo, "take a fork");
+	display(philo, "has taken a fork");
+	display(philo, "has taken a fork");
 	sem_wait(philo->sem_check);
-	display(philo, "eating");
+	display(philo, "is eating");
 	gettimeofday(&philo->last_meal, NULL);
 	philo->eating++;
 	sem_post(philo->sem_check);
@@ -44,5 +44,5 @@ int		ft_eat(t_philosoph *philo)
 
 void	ft_think(t_philosoph *philo)
 {
-	display(philo, "thinking");
+	display(philo, "is thinking");
 }

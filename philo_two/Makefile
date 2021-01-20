@@ -16,7 +16,7 @@ SRC =		main.c init.c error.c display.c action.c global.c
 
 USRC = 		$(addprefix utils/, ft_atoi.c ft_write.c ft_strlen.c get_time.c ft_putnbr.c ft_isdigit.c ft_stris.c ft_get_timestamp.c ft_calloc.c)
 
-FLAG =		-Wall -Werror -Wextra -O3 -g3 -fsanitize=address
+FLAG =		-Wall -Werror -Wextra -O3 -g3 #-fsanitize=address
 
 SRCS_NAME	=	$(SRC) $(USRC)
 
@@ -34,7 +34,7 @@ OBJ_PATH	=	bin/
 
 OBJ			=	$(addprefix $(OBJ_PATH), $(OBJ_NAME))
 
-NAME		=	philo_one
+NAME		=	philo_two
 
 CC			=	gcc
 

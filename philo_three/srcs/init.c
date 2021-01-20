@@ -6,7 +6,7 @@
 /*   By: coscialp <coscialp@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 14:31:42 by coscialp          #+#    #+#             */
-/*   Updated: 2021/01/19 15:06:13 by coscialp         ###   ########lyon.fr   */
+/*   Updated: 2021/01/20 11:06:37 by coscialp         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ int		init_philosoph(int i)
 	state()->philosoph->id = i + 1;
 	state()->philosoph->is_dead = 1;
 	state()->philosoph->eating = 0;
-	state()->philosoph->sem_check = create_sem("sem_check", i, 1);
-	state()->philosoph->sem_eat = create_sem("sem_eat", i, 0);
+	state()->philosoph->sem_check = create_sem("/sem_check", i, 1);
+	state()->philosoph->sem_eat = create_sem("/sem_eat", i, 0);
 	left = state()->philosoph;
 	if (i == 0)
 		top = state()->philosoph;
@@ -73,10 +73,10 @@ int		init_rules(int ac, char **av)
 	if ((state()->rules.time_to_sleep = ft_atoi(av[4])) <= 0)
 		return (ft_error("Rule must be positive\n"));
 	state()->rules.number_of_must_eat = (ac == 6) ? ft_atoi(av[5]) : -1;
-	sem_unlink("sem_write");
-	state()->sem_write = sem_open("sem_write", O_CREAT, S_IRWXU, 1);
-	sem_unlink("sem_forks");
-	state()->forks = sem_open("sem_forks",
+	sem_unlink("/sem_write");
+	state()->sem_write = sem_open("/sem_write", O_CREAT, S_IRWXU, 1);
+	sem_unlink("/sem_forks");
+	state()->forks = sem_open("/sem_forks",
 	O_CREAT, S_IRWXU, state()->rules.number_of_philo);
 	return (0);
 }

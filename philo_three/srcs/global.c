@@ -6,7 +6,7 @@
 /*   By: coscialp <coscialp@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 10:55:23 by coscialp          #+#    #+#             */
-/*   Updated: 2021/01/19 14:57:34 by coscialp         ###   ########lyon.fr   */
+/*   Updated: 2021/01/20 11:06:47 by coscialp         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,17 @@ char		*ft_itoa(int n)
 
 void		destroy_sem(void)
 {
-	int		i;
+	int			i;
+	t_philosoph	*tmp;
 
 	i = -1;
 	while (++i < state()->rules.number_of_philo)
 	{
 		sem_close(state()->philosoph->sem_check);
 		sem_close(state()->philosoph->sem_eat);
-		state()->philosoph = state()->philosoph->right;
+		tmp = state()->philosoph->right;
+		free(state()->philosoph);
+		state()->philosoph = tmp;
 	}
 	sem_close(state()->sem_write);
 	sem_close(state()->forks);
@@ -67,7 +70,7 @@ void		destroy_sem(void)
 sem_t		*create_sem(char *name, int id, int value)
 {
 	char				*number;
-	static char			name_sem[15] = {0};
+	static char			name_sem[16] = {0};
 
 	number = ft_itoa(id + 1);
 	ft_strcat(name_sem, name, 0);

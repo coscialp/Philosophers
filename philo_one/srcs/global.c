@@ -6,7 +6,7 @@
 /*   By: coscialp <coscialp@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 10:55:23 by coscialp          #+#    #+#             */
-/*   Updated: 2020/12/18 11:04:59 by coscialp         ###   ########lyon.fr   */
+/*   Updated: 2021/01/20 09:21:36 by coscialp         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 void		destroy_mutex(void)
 {
-	int		i;
+	int			i;
+	t_philosoph	*tmp;
+	t_fork		*tmp_fork;
 
 	i = -1;
 	while (++i < state()->rules.number_of_philo)
@@ -23,7 +25,16 @@ void		destroy_mutex(void)
 		pthread_mutex_destroy(&state()->philosoph->r_fork->mutex);
 		pthread_mutex_destroy(&state()->philosoph->mutex_check);
 		pthread_mutex_destroy(&state()->philosoph->mutex_eat);
-		state()->philosoph = state()->philosoph->right;
+		tmp = state()->philosoph->right;
+		free(state()->philosoph);
+		state()->philosoph = tmp;
+	}
+	i = -1;
+	while (++i < state()->rules.number_of_philo)
+	{
+		tmp_fork = state()->fork->right;
+		free(state()->fork);
+		state()->fork = tmp_fork;
 	}
 	pthread_mutex_destroy(&state()->mutex_write);
 	pthread_mutex_destroy(&state()->mutex_state);
