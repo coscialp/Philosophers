@@ -6,7 +6,7 @@
 /*   By: coscialp <coscialp@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/10 09:40:47 by coscialp          #+#    #+#             */
-/*   Updated: 2020/12/18 12:20:56 by coscialp         ###   ########lyon.fr   */
+/*   Updated: 2021/01/21 09:07:50 by coscialp         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ typedef struct	s_state
 	struct timeval		begin_time;
 	time_t				time;
 	bool				end;
+	int					eating;
 }				t_state;
 
 int				ft_write(int fd, char *buf, size_t size);
@@ -88,7 +89,6 @@ void			display(t_philosoph *philo, char *message);
 int				get_timestamp(struct timeval s, struct timeval t);
 void			*th_brain(void *philo_ptr);
 void			*th_routine(void *philo_ptr);
-void			*th_eating(void *ptr);
 void			ft_sleep(t_philosoph *philo);
 int				ft_eat(t_philosoph *philo);
 void			ft_think(t_philosoph *philo);

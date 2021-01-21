@@ -6,7 +6,7 @@
 /*   By: coscialp <coscialp@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/10 12:08:50 by coscialp          #+#    #+#             */
-/*   Updated: 2021/01/20 13:47:40 by coscialp         ###   ########lyon.fr   */
+/*   Updated: 2021/01/21 09:07:41 by coscialp         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,42 +61,10 @@ void		*th_routine(void *philo_ptr)
 	return (NULL);
 }
 
-void		*th_eating(void *ptr)
-{
-	int		i;
-	char	*ending;
-
-	(void)ptr;
-	if (!(ending = ft_calloc(sizeof(char), state()->rules.number_of_philo)))
-		return (NULL);
-	while (!state()->end)
-	{
-		i = -1;
-		while (++i < state()->rules.number_of_philo && !state()->end)
-		{
-			if (state()->philosoph->eating == state()->rules.number_of_must_eat)
-				ending[state()->philosoph->id - 1] = 1;
-			state()->philosoph = state()->philosoph->right;
-		}
-		i = -1;
-		while (++i < state()->rules.number_of_philo && !state()->end)
-			if (ending[i] != 1)
-				break ;
-		pthread_mutex_lock(&state()->mutex_write);
-		if (i == state()->rules.number_of_philo)
-			state()->end = 1;
-		pthread_mutex_unlock(&state()->mutex_write);
-		usleep(500);
-	}
-	free(ending);
-	return (NULL);
-}
-
 int			main(int ac, char **av)
 {
 	static int	i = -1;
 	pthread_t	pid;
-	pthread_t	end_game;
 
 	if (init_state(ac, av))
 		return (1);
@@ -104,8 +72,6 @@ int			main(int ac, char **av)
 	state()->time = get_time();
 	if (state()->rules.number_of_must_eat == 0)
 		return (0);
-	if (state()->rules.number_of_must_eat != -1)
-		pthread_create(&end_game, NULL, th_eating, NULL);
 	while (++i < state()->rules.number_of_philo)
 	{
 		pthread_create(&pid, NULL, th_routine, state()->philosoph);
@@ -113,8 +79,6 @@ int			main(int ac, char **av)
 		state()->philosoph = state()->philosoph->right;
 	}
 	pthread_join(pid, NULL);
-	if (state()->rules.number_of_must_eat != -1)
-		pthread_join(end_game, NULL);
 	destroy_mutex();
 	return (0);
 }
