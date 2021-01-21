@@ -6,7 +6,7 @@
 /*   By: coscialp <coscialp@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 10:58:35 by coscialp          #+#    #+#             */
-/*   Updated: 2021/01/21 09:06:15 by coscialp         ###   ########lyon.fr   */
+/*   Updated: 2021/01/21 09:52:02 by coscialp         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ int		ft_eat(t_philosoph *philo)
 	display(philo, "has taken a fork");
 	pthread_mutex_lock(&philo->mutex_check);
 	philo->eating++;
+	display(philo, "is eating");
 	if (philo->eating == state()->rules.number_of_must_eat)
 		state()->eating++;
-	display(philo, "is eating");
 	if (state()->eating == state()->rules.number_of_philo)
 		state()->end = 1;
 	gettimeofday(&philo->last_meal, NULL);
