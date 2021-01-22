@@ -6,7 +6,7 @@
 /*   By: coscialp <coscialp@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/10 12:08:50 by coscialp          #+#    #+#             */
-/*   Updated: 2021/01/20 13:54:57 by coscialp         ###   ########lyon.fr   */
+/*   Updated: 2021/01/22 12:21:46 by coscialp         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ void		*th_brain(void *philo_ptr)
 	philo = (t_philosoph *)philo_ptr;
 	while (philo->is_dead)
 	{
-		if (philo->eating == state()->rules.number_of_must_eat)
-			sem_post(philo->sem_eat);
 		if (state()->end)
 			break ;
+		if (philo->eating == state()->rules.number_of_must_eat)
+			sem_post(philo->sem_eat);
 		sem_wait(philo->sem_check);
 		if (ft_is_dead(philo))
 		{

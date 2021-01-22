@@ -6,7 +6,7 @@
 /*   By: coscialp <coscialp@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 10:58:35 by coscialp          #+#    #+#             */
-/*   Updated: 2021/01/20 13:53:33 by coscialp         ###   ########lyon.fr   */
+/*   Updated: 2021/01/22 12:30:02 by coscialp         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,13 @@ int		ft_eat(t_philosoph *philo)
 	sem_wait(philo->sem_check);
 	display(philo, "is eating");
 	gettimeofday(&philo->last_meal, NULL);
-	philo->eating++;
 	sem_post(philo->sem_check);
+	philo->eating++;
 	usleep(state()->rules.time_to_eat * 1000);
 	sem_post(state()->forks);
 	sem_post(state()->forks);
+	if (philo->eating == state()->rules.number_of_must_eat)
+		return (1);
 	return (0);
 }
 
